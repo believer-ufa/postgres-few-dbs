@@ -1,0 +1,26 @@
+version: '2'
+services:
+  main:
+    build: ./main
+    restart: always
+    ports: ['127.0.0.1:5432:5432']
+    depends_on:
+      - "users-db"
+      - "companies-db"
+    volumes:
+      - ./main/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      # - ./main/data:/var/lib/postgresql/data
+
+  companies-db:
+    build: ./companies-db
+    ports: ['127.0.0.1:5433:5432']
+    volumes:
+      - ./companies-db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      # - ./companies-db/data:/var/lib/postgresql/data
+
+  users-db:
+    build: ./users-db
+    ports: ['127.0.0.1:5434:5432']
+    volumes:
+      - ./users-db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      # - ./users-db/data:/var/lib/postgresql/data
